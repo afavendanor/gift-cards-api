@@ -4,6 +4,7 @@ import co.com.project.domain.exception.InvalidDataException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,10 @@ public class HandlerRestController {
         return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({AuthorizationDeniedException.class})
+    public ResponseEntity<Object> authorizationDeniedException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler({Throwable.class})
     public ResponseEntity<Object> handlerErrorInternal(Exception ex, WebRequest request) {

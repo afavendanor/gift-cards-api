@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class UserController {
     private final GettingListUserUseCase gettingListUserUseCase;
 
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Return list of users")
     public ResponseEntity<List<UserDTO>> list() {
         List<User> userList = gettingListUserUseCase.execute();
@@ -30,6 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Save information of a user admin")
     public ResponseEntity<?> create(@Valid @RequestBody UserDTO request) {
         User user = createUserUseCase.execute(UserDTOTransformer.INSTANCE.userDTOToUser(request), true);
@@ -37,6 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Register information of a user")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO request) {
         User user = createUserUseCase.execute(UserDTOTransformer.INSTANCE.userDTOToUser(request), false);

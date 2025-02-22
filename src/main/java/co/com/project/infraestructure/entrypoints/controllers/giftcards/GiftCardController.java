@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -27,20 +28,29 @@ public class GiftCardController {
     private final GettingListGiftCardUseCase gettingListGiftCardUseCase;
 
     @GetMapping("/{code}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Return gift card information")
     public ResponseEntity<GiftCardDTO> get(@PathVariable String code) {
         GiftCard giftCard = gettingGiftCardUseCase.execute(code);
+        if (giftCard == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardToGiftCardDTO(giftCard));
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Return list of gift card information")
     public ResponseEntity<List<GiftCardDTO>> list() {
         List<GiftCard> giftCardList = gettingListGiftCardUseCase.execute();
+        if (giftCardList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardListToGiftCardDTOList(giftCardList));
     }
 
     @PutMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Save information of a gift card")
     public ResponseEntity<?> create(@Valid @RequestBody GiftCardDTO request) {
         GiftCard giftCard = this.createGiftCardUseCase.execute(GiftCardDTOTransformer.INSTANCE.giftCardDTOToGiftCard(request));
@@ -48,6 +58,7 @@ public class GiftCardController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update information of a gift card")
     public ResponseEntity<GiftCardDTO> update(@RequestParam String code,
                                               @RequestParam(required = false) Double amount,
@@ -57,6 +68,7 @@ public class GiftCardController {
     }
 
     @PostMapping("/redeem")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Redeem information of a gift card")
     public ResponseEntity<GiftCardDTO> redeem(@RequestParam String code, @RequestParam Double value) {
         GiftCard giftCard = this.redeemGiftCardUseCase.execute(code, value);
@@ -64,6 +76,7 @@ public class GiftCardController {
     }
 
     @DeleteMapping("/{code}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete information of a gift card")
     public ResponseEntity<Void> delete(@PathVariable String code) {
         this.deleteGiftCardUseCase.execute(code);
