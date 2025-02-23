@@ -27,8 +27,14 @@ public class CreateGiftCardUseCase {
             giftCard.setCreationDate(LocalDateTime.now());
         }
         GiftCard result = service.saveGiftCard(giftCard);
-        String subject = "Se ha ingresado un nuevo gift card";
-        String body = "";
+        String subject = "🎁 ¡Tu Gift Card está lista!";
+        String body = String.format("¡Felicidades! 🎉\n\n" +
+                "Has recibido una Gift Card.\n\n" +
+                "🔹 Código: %d\n" +
+                "🔹 Monto: $ %.2f\n" +
+                "🔹 Fecha de vencimiento: %tF\n\n" +
+                "Para redimir tu tarjeta, usa el código en nuestra tienda en línea.\n\n" +
+                "¡Gracias por elegirnos!", result.getId(), result.getAmount(), result.getExpirationDate());
 
         notificationService.sendNotification(user.getEmail(), subject, body);
         return result;
