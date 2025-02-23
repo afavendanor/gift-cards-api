@@ -49,15 +49,15 @@ public class GiftCardController {
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardListToGiftCardDTOList(giftCardList));
     }
 
-    @PutMapping("/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Operation(summary = "Save information of a gift card")
     public ResponseEntity<?> create(@Valid @RequestBody GiftCardDTO request) {
         GiftCard giftCard = this.createGiftCardUseCase.execute(GiftCardDTOTransformer.INSTANCE.giftCardDTOToGiftCard(request));
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardToGiftCardDTO(giftCard));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update information of a gift card")
     public ResponseEntity<GiftCardDTO> update(@RequestParam Long id,
@@ -67,7 +67,7 @@ public class GiftCardController {
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardToGiftCardDTO(giftCard));
     }
 
-    @PostMapping("/redeem")
+    @PutMapping("/redeem")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Redeem information of a gift card")
     public ResponseEntity<GiftCardDTO> redeem(@RequestParam Long id, @RequestParam Double value) {

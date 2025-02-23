@@ -8,6 +8,7 @@
     * [Descargar proyecto "gift-card" del repositorio de código fuente](#descargar-proyecto-gift-card-del-repositorio-de-código-fuente)
     * [Entorno de desarrollo Eclipse IDE](#entorno-de-desarrollo-eclipse-ide)
     * [Entorno de desarrollo IntelliJ IDEA](#entorno-de-desarrollo-intellij-idea)
+4. [Endpoints](#endpoints)
 4. [Más información](#más-información)
 
 ## Información general
@@ -40,7 +41,7 @@ Lista de tecnologías utilizadas:
 * [Eclipse IDE](https://www.eclipse.org/) o [IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/)
 * [Lombok](https://projectlombok.org/)
 * [Swagger](https://swagger.io/)
-* JPA (Hibernate)
+* Spring Data JPA
 * Base de datos H2
 * [Git](https://git-scm.com/)
 * [Jasypt](http://www.jasypt.org/)
@@ -67,8 +68,7 @@ $ gradle clean build
 ```
 
 ### Entorno de desarrollo Eclipse IDE
-Descargar e instalar [Eclipse IDE for Enterprise Java Developers](https://www.eclipse.org/downloads/download.php?file=/oomph/epp/2020-12/R/eclipse-inst-jre-win64.exe&mirror_id=576)
-, realizar las siguientes configuraciones:
+Descargar e instalar [Eclipse IDE for Enterprise Java Developers](https://www.eclipse.org/downloads/download.php?file=/oomph/epp/2020-12/R/eclipse-inst-jre-win64.exe&mirror_id=576), realizar las siguientes configuraciones:
 1. Abrir Eclipse IDE e instalar en plugin de Spring Tools 4, ```Help->Marketplace e instalar "spring tools"```
 2. Instalar el plugin de [Lombok](https://projectlombok.org/downloads/lombok.jar) para Eclipse IDE,
    las instrucciones de instalación están [aquí](https://projectlombok.org/setup/eclipse).
@@ -90,6 +90,52 @@ Una vez ubicado en el proyecto y tener instalado Graadle se puede ejecutar los s
 $ gradle clean build
 $ gradle bootRun
 ```
+Una vez inicia la aplicación como tiene una base de datos en memoria se precargan datos de usuario y de gift-cards configurado en el archivo ```./gift-cards-api/src/main/java/co/com/project/infraestructure/dataloader/DataLoader.java```, todo esto en una base de datos H2 que se configura en el archivo en el archivo ```./gift-cards-api/src/main/resources/application.yml```
+```
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+    datasource:
+      driverClassName: org.h2.Driver
+      url: jdbc:h2:mem:gift_cards;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      initialize: true
+    jpa:
+      properties:
+      database-platform: org.hibernate.dialect.H2Dialect
+      show-sql: true
+      hibernate:
+        ddl-auto: create
+```
+
+## Endpoints
+
+### Autenticación
+La autenticación se realiza utilizando un token JWT. Primero debes autenticarse en el endpoint ```/login```, y luego usar el token JWT en las siguientes solicitudes.
+```curl -X POST -d '{"username": "user", "password": "password"}' -H "Content-Type: application/json" http://localhost:8080/login```
+
+Luego, usa el token en los encabezados de las siguientes solicitudes, por ejemplo:
+```curl -X GET http://localhost:8080/api/gift-cards/list -H "Authorization: Bearer <your-jwt-token>"```
+
+### Endpoints disponibles
+
+* ```GET /health```: Verifica el estado de la API.
+* User
+   * ```GET /api/users/list```: Lista los usuarios registrados en el sistema.
+   * ```POST /api/users/create```: Permite crear un usuario como administrador.
+   * ```POST /api/users/register```: Permite crear un usuario como user, no requiere autorización.
+   * ```POST /login```: Autenticación de usuarios con JWT.
+* GiftCards
+  * ```GET /api/gift-cards/:id```: Obtiene todas las tarjetas de regalo.
+  * ```GET /api/gift-cards/list```: Obtiene todas las tarjetas de regalo
+  * ```POST /api/gift-cards/create```: Crea una nueva tarjeta de regalo.
+  * ```PUT /api/gift-cards/update```: Actualiza una tarjeta de regalo.
+  * ```PUT /api/gift-cards/redeem```: Permite redimir una tarjeta de regalo.
+  * ```DELETE /api/gift-cards/:id```: Elimina una tarjeta de regalo.
+
+En el directorio doc/collection.json se encuentran los ejmplos de invocación a los servicios expuestos en el proyecto. Se encuentran los endpoint con los request. Para ello se debe importar en herramientas como Postman o Insomnia.
 
 ## Más información
 
