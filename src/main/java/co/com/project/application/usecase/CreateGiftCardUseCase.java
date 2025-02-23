@@ -21,7 +21,7 @@ public class CreateGiftCardUseCase {
     public GiftCard execute(GiftCard giftCard) {
         User user = userService.findById(giftCard.getUserId());
         if (user == null) {
-            throw new InvalidDataException(String.format("El user id %d no està registrado en el sistema", giftCard.getUserId()));
+            throw new InvalidDataException(String.format("The user id %d is not registered in the system", giftCard.getUserId()));
         }
         if (giftCard.getCreationDate() == null) {
             giftCard.setCreationDate(LocalDateTime.now());

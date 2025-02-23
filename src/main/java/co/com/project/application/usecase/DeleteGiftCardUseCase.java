@@ -13,5 +13,4 @@ public class DeleteGiftCardUseCase {
     public void execute(Long id) {
         service.deleteGiftCard(id);
     }
-
 }

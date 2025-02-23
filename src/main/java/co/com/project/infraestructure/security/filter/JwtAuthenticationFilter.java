@@ -55,8 +55,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                         FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
@@ -82,8 +82,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
+    public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
         Map<String, String> body = new HashMap<>();
         body.put("error", failed.getMessage());
         body.put("message", "Incorrect username or password!");

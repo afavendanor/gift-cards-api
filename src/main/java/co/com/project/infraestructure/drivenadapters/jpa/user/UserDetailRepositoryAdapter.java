@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +31,9 @@ public class UserDetailRepositoryAdapter implements UserDetailsService {
         UserData user = userDataOptional.orElseThrow();
 
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(
+                        role.getName().startsWith("ROLE_") ? role.getName() : "ROLE_" + role.getName()
+                ))
                 .collect(Collectors.toList());
 
         return new User(user.getUsername(), user.getPassword(), user.isEnable(),

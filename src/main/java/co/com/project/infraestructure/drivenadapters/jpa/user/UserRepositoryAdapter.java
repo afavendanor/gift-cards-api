@@ -51,6 +51,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(Long id) {
         return UserDataTransformer.INSTANCE.userDataToUser(
                 userDataRepository.findById(id).orElse(null)

@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
 import java.util.List;
 
 @Configuration
@@ -42,9 +43,9 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(authz -> authz
-                 .requestMatchers(HttpMethod.GET, "/health").permitAll()
-                .anyRequest()
-                .authenticated())
+                        .requestMatchers(HttpMethod.GET, "/health").permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .csrf(config -> config.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -72,5 +73,6 @@ public class SpringSecurityConfig {
         corsFilterFilterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return corsFilterFilterRegistrationBean;
     }
+
 
 }

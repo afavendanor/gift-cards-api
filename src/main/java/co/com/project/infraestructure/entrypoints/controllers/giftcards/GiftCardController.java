@@ -50,7 +50,7 @@ public class GiftCardController {
     }
 
     @PutMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Save information of a gift card")
     public ResponseEntity<?> create(@Valid @RequestBody GiftCardDTO request) {
         GiftCard giftCard = this.createGiftCardUseCase.execute(GiftCardDTOTransformer.INSTANCE.giftCardDTOToGiftCard(request));
