@@ -1,10 +1,7 @@
 package co.com.project.infraestructure.drivenadapters.jpa.user.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +16,7 @@ public class UserData {
     @Column(unique = true)
     private String username;
     private String password;
+    private String email;
     private boolean enable;
     @ManyToMany
     @JoinTable(
@@ -28,5 +26,4 @@ public class UserData {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})}
     )
     private List<RoleData> roles;
-
 }

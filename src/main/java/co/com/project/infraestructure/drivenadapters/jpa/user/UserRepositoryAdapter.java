@@ -49,4 +49,11 @@ public class UserRepositoryAdapter implements UserRepository {
                 userDataRepository.save(UserDataTransformer.INSTANCE.userToUserData(user))
         );
     }
+
+    @Override
+    public User findById(Long id) {
+        return UserDataTransformer.INSTANCE.userDataToUser(
+                userDataRepository.findById(id).orElse(null)
+        );
+    }
 }

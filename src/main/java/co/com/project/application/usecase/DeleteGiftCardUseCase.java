@@ -10,8 +10,8 @@ public class DeleteGiftCardUseCase {
 
     private final GiftCardService service;
 
-    public void execute(String code) {
-        service.deleteGiftCard(code);
+    public void execute(Long id) {
+        service.deleteGiftCard(id);
     }
 
 }

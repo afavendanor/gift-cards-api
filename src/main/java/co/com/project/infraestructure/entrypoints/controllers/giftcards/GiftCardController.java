@@ -27,11 +27,11 @@ public class GiftCardController {
     private final RedeemGiftCardUseCase redeemGiftCardUseCase;
     private final GettingListGiftCardUseCase gettingListGiftCardUseCase;
 
-    @GetMapping("/{code}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Return gift card information")
-    public ResponseEntity<GiftCardDTO> get(@PathVariable String code) {
-        GiftCard giftCard = gettingGiftCardUseCase.execute(code);
+    public ResponseEntity<GiftCardDTO> get(@PathVariable Long id) {
+        GiftCard giftCard = gettingGiftCardUseCase.execute(id);
         if (giftCard == null) {
             return ResponseEntity.notFound().build();
         }
@@ -60,26 +60,26 @@ public class GiftCardController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update information of a gift card")
-    public ResponseEntity<GiftCardDTO> update(@RequestParam String code,
+    public ResponseEntity<GiftCardDTO> update(@RequestParam Long id,
                                               @RequestParam(required = false) Double amount,
                                               @RequestParam(required = false) String status) {
-        GiftCard giftCard = this.updateGiftCardUseCase.execute(code, amount, status);
+        GiftCard giftCard = this.updateGiftCardUseCase.execute(id, amount, status);
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardToGiftCardDTO(giftCard));
     }
 
     @PostMapping("/redeem")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @Operation(summary = "Redeem information of a gift card")
-    public ResponseEntity<GiftCardDTO> redeem(@RequestParam String code, @RequestParam Double value) {
-        GiftCard giftCard = this.redeemGiftCardUseCase.execute(code, value);
+    public ResponseEntity<GiftCardDTO> redeem(@RequestParam Long id, @RequestParam Double value) {
+        GiftCard giftCard = this.redeemGiftCardUseCase.execute(id, value);
         return ResponseEntity.ok(GiftCardDTOTransformer.INSTANCE.giftCardToGiftCardDTO(giftCard));
     }
 
-    @DeleteMapping("/{code}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete information of a gift card")
-    public ResponseEntity<Void> delete(@PathVariable String code) {
-        this.deleteGiftCardUseCase.execute(code);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        this.deleteGiftCardUseCase.execute(id);
         return ResponseEntity.ok().build();
     }
 

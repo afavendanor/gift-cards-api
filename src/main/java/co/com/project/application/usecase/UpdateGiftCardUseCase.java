@@ -14,8 +14,8 @@ public class UpdateGiftCardUseCase {
 
     private final GiftCardService service;
 
-    public GiftCard execute(String code, Double amount, String status) {
-        GiftCard giftCard = service.getGiftCard(code);
+    public GiftCard execute(Long id, Double amount, String status) {
+        GiftCard giftCard = service.getGiftCard(id);
         if (giftCard != null) {
             if (amount != null && amount > 0) giftCard.setAmount(amount);
             if (!StringUtils.isBlank(status)) giftCard.setStatus(GiftCardStatus.valueOf(status));

@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class GiftCard {
-    private String code;
+    private Long id;
     private Double amount;
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
     private GiftCardStatus status;
+    private Long userId;
+    private User user;
 }

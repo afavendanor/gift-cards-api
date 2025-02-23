@@ -5,12 +5,12 @@ import java.util.List;
 
 public interface GiftCardRepository {
 
-    GiftCard get(String code);
+    GiftCard get(Long id);
 
     List<GiftCard> list();
 
     GiftCard save(GiftCard giftCard);
 
-    void delete(String code);
+    void delete(Long id);
 
 }

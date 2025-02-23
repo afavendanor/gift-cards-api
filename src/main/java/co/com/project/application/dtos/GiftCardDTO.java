@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GiftCardDTO {
-    private String code;
+    private Long id;
     @NotNull(message = "The amount is mandatory")
     @Positive(message = "The amount must be positive")
     private Double amount;
@@ -23,4 +23,6 @@ public class GiftCardDTO {
     private LocalDateTime expirationDate;
     @NotNull(message = "The state is mandatory")
     private GiftCardStatus status;
+    @NotNull(message = "The user ID is mandatory")
+    private Long userId;
 }

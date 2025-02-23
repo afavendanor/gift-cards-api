@@ -1,11 +1,9 @@
 package co.com.project.infraestructure.drivenadapters.jpa.giftcards.entities;
 
 import co.com.project.domain.model.enums.GiftCardStatus;
+import co.com.project.infraestructure.drivenadapters.jpa.user.entities.UserData;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -15,7 +13,8 @@ import java.time.LocalDateTime;
 @Entity(name = "gift_cards")
 public class GiftCardData {
     @Id
-    private String code;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Double amount;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -23,5 +22,9 @@ public class GiftCardData {
     private LocalDateTime expirationDate;
     @Enumerated(EnumType.STRING)
     private GiftCardStatus status;
-
+    @Column(name = "user_id")
+    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserData user;
 }

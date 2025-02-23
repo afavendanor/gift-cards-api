@@ -16,9 +16,9 @@ public class GiftCardRepositoryAdapter implements GiftCardRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public GiftCard get(String code) {
+    public GiftCard get(Long id) {
         return GiftCardDataTransformer.INSTANCE.giftCardDataToGiftCard(
-                repository.findById(code).orElse(null)
+                repository.findById(id).orElse(null)
         );
     }
 
@@ -33,13 +33,14 @@ public class GiftCardRepositoryAdapter implements GiftCardRepository {
     @Override
     @Transactional
     public GiftCard save(GiftCard giftCard) {
-        repository.save(GiftCardDataTransformer.INSTANCE.giftCardToGiftCardData(giftCard));
-        return giftCard;
+        return GiftCardDataTransformer.INSTANCE.giftCardDataToGiftCard(
+            repository.save(GiftCardDataTransformer.INSTANCE.giftCardToGiftCardData(giftCard))
+        );
     }
 
     @Override
     @Transactional
-    public void delete(String code) {
-        repository.deleteById(code);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

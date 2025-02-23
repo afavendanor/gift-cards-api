@@ -13,7 +13,7 @@ spring:
       path: /h2-console
     datasource:
       driverClassName: org.h2.Driver
-      url: jdbc:h2:mem:giftcards
+      url: jdbc:h2:mem:gift_cards;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
       initialize: true
@@ -22,5 +22,15 @@ spring:
       database-platform: org.hibernate.dialect.H2Dialect
       show-sql: true
       hibernate:
-        ddl-auto: create-drop
-
+        ddl-auto: create
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+      host: smtp.gmail.com
+      username: ENC(64jiip4nDgmWVOd1D+kRKLrGyGK/Xt1S2LnhSRR5W4OO+6oUqt/9bdE9zoKLAV9jMnHy4pSG0Th7kariuo3JfQ==)
+      password: ENC(rrRnpPwAKuSX9pu3Ggb3A8482I5DJsbK40iDzaPRi2jV4YHcKqwv+7bVMwXgTEQjUFZjaJGAVRgxlbF85U0J1g==)
+      port: 587

@@ -12,8 +12,8 @@ public class GiftCardService {
 
     private final GiftCardRepository repository;
 
-    public GiftCard getGiftCard(String code) {
-        return repository.get(code);
+    public GiftCard getGiftCard(Long id) {
+        return repository.get(id);
     }
 
     public List<GiftCard> listGiftCard() {
@@ -24,7 +24,7 @@ public class GiftCardService {
         return repository.save(giftCard);
     }
 
-    public void deleteGiftCard(String code) {
-        repository.delete(code);
+    public void deleteGiftCard(Long id) {
+        repository.delete(id);
     }
 }

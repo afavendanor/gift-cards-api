@@ -11,7 +11,7 @@ public class GettingGiftCardUseCase {
 
     private final GiftCardService service;
 
-    public GiftCard execute(String code) {
-        return service.getGiftCard(code);
+    public GiftCard execute(Long id) {
+        return service.getGiftCard(id);
     }
 }

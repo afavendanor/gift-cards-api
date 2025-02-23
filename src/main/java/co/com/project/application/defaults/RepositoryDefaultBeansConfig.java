@@ -16,7 +16,7 @@ public class RepositoryDefaultBeansConfig {
     private final GiftCardRepository giftCardRepository = new GiftCardRepository() {
 
         @Override
-        public GiftCard get(String code) {
+        public GiftCard get(Long id) {
             return null;
         }
 
@@ -31,7 +31,7 @@ public class RepositoryDefaultBeansConfig {
         }
 
         @Override
-        public void delete(String code) {
+        public void delete(Long id) {
 
         }
     };
