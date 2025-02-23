@@ -30,7 +30,7 @@ El proyecto tiene la siguiente estructura:
 
 Ver más sobre [arquitecturas limpias](https://www.youtube.com/watch?v=y3MWfPDmVqo).
 
-Se hace uso de la libreria de swagger para documentar todo aquello que sea relevante dentro del proyecto. Se puede visualizar en (http://54.144.38.85:9000/swagger-ui.html)
+Se hace uso de la libreria de swagger para documentar todo aquello que sea relevante dentro del proyecto.
 
 ## Tecnologías
 Lista de tecnologías utilizadas:
